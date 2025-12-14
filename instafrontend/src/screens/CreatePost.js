@@ -1,16 +1,5 @@
-
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-
-  TouchableOpacity,
-  Image,
-  Alert,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, Alert, StyleSheet, ScrollView} from "react-native";
 import API from "../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -18,90 +7,92 @@ export default function CreatePost({ navigation }) {
   const [imageUrl, setImageUrl] = useState("");
   const [caption, setCaption] = useState("");
 
-  const isValidUrl = (url) => {
-    return url.startsWith("http://") || url.startsWith("https://");
+  const isValidUrl =(url) => {
+    return url.startsWith("http://") ||
+    url.startsWith("https://");
   };
 
   const createPost = async () => {
     if (!imageUrl) {
-      Alert.alert("Error", "Image URL is required");
+      Alert.alert("Error" , "Image URL is required");
       return;
     }
 
-    if (!isValidUrl(imageUrl)) {
-      Alert.alert("Error", "Enter a valid image URL (http/https)");
+    if (!isValidUrl(imageUrl)){
+      Alert.alert("Error", "Enter a valid image URL(http/https)");
       return;
     }
 
-    const token = await AsyncStorage.getItem("access");
+    const token = await
+    AsyncStorage.getItem("access");
 
     try {
       await API.post(
         "posts/",
         {
-          image_url: imageUrl,
+          image_url : imageUrl,
           caption: caption,
         },
         {
-          headers: {
+          headers :{
             Authorization: `Bearer ${token}`,
           },
         }
       );
 
-      Alert.alert("Success", "Post created!");
+      Alert.alert("Success" ,"Post created!");
       navigation.goBack();
+
     } catch (error) {
-      console.log("POST ERROR:", error.response?.data);
+      console.log("POST ERROR:" , error.response?.data);
       Alert.alert("Error", "Failed to create post");
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Header */}
       <Text style={styles.header}>New Post</Text>
 
-      {/* Image Preview */}
       {isValidUrl(imageUrl) ? (
-        <Image
-          source={{ uri: imageUrl }}
-          style={styles.previewImage}
-          onError={() => Alert.alert("Error", "Image cannot be loaded")}
+        <Image source= {{uri : imageUrl}}
+        style={styles.previewImage}
+        onError={() => Alert.alert("Error" , "Image cannot be loaded")}
         />
-      ) : (
+      ): (
         <View style={styles.placeholder}>
           <Text style={styles.placeholderText}>Image Preview</Text>
+
         </View>
       )}
 
-      {/* Image URL */}
+      {/* Image Url */}
       <TextInput
         placeholder="Image URL (https://...)"
         value={imageUrl}
         onChangeText={setImageUrl}
         style={styles.input}
         autoCapitalize="none"
-      />
-
-      {/* Caption */}
+        />
       <TextInput
-        placeholder="Write a caption..."
+        placeholder="Write a caption"
         value={caption}
         onChangeText={setCaption}
         style={[styles.input, styles.captionInput]}
         multiline
-      />
+        />
 
       {/* Button */}
-      <TouchableOpacity style={styles.postButton} onPress={createPost}>
-        <Text style={styles.postButtonText}>Share</Text>
+      <TouchableOpacity style={styles.postButton}
+      onPress={createPost}>
+        <Text style={styles.postButtonText}>Post</Text>
       </TouchableOpacity>
+
     </ScrollView>
   );
 }
 
-/* ---------------- STYLES ---------------- */
+
+
 const styles = StyleSheet.create({
   container: {
     padding : 16,
@@ -122,7 +113,7 @@ const styles = StyleSheet.create({
 
   },
   placeholder: {
-    widht :"100%",
+    width :"100%",
     height: 300,
     backgroundColor:"#f0f0f0",
     borderRadius: 10,
@@ -134,29 +125,29 @@ const styles = StyleSheet.create({
   placeholderText:{
     color: "#888",
   },
-// add
   input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
+    borderWidth:1,
+    borderColor:"#ddd",
     borderRadius: 8,
-    padding: 12,
+    padding:12,
     marginBottom: 12,
     fontSize: 14,
   },
-  captionInput: {
-    height: 90,
-    textAlignVertical: "top",
+  captionInput:{
+    height:90,
+    textAlignVertical:"top",
   },
   postButton: {
-    backgroundColor: "#3897f0",
+    backgroundColor:"#3897f0",
     paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 5,
+    borderRadius:8,
+    alignItems:"center",
+    marginTop:5,
   },
-  postButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
+  postButtonText:{
+    color : "#fff",
+    fontWeight:"bold",
+    fontSize:16,
   },
+
 });

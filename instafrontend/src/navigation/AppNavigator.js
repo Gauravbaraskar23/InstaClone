@@ -4,14 +4,14 @@ import HomeFeed from "../screens/HomeFeed";
 import CreatePost from "../screens/CreatePost";
 import ProfileScreen from "../screens/ProfileScreen";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator(); 
 
 export default function AppNavigator() {
-  return (
+  return(
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeFeed} />
-      <Tab.Screen name="Create" component={CreatePost} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name ="Home" component = {HomeFeed} />
+      <Tab.Screen name = "Create" component={CreatePost} />
+      <Tab.Screen name = "Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
