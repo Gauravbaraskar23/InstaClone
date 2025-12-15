@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from .models import Post, Like, Comment, Follow
 from .serializers import PostSerializer, CommentSerializer, UserSerializer, RegisterSerializer
-
+import random
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -73,11 +73,12 @@ class PostViewSet(viewsets.ModelViewSet):
         
     @action(detail= False, methods=['get'])
     def feed(self, request):
-        following_users = Follow.objects.filter(
-            follower= request.user
-        ).values_list('following' , flat= True)
+        # following_users = Follow.objects.filter(
+        #     follower= request.user
+        # ).values_list('following' , flat= True)
         
-        posts = Post.objects.filter(user__in = following_users)
+        # posts = Post.objects.filter(user__in = following_users)
+        posts = Post.objects.all().order_by('?')
         serializer = self.get_serializer(posts , many= True, context= {'request': request})
         return Response(serializer.data)
     

@@ -3,11 +3,31 @@ import {
   View,Text, Image, StyleSheet, TouchableOpacity,
 } from "react-native";
 import API from "../api/api"; 
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
 export default function PostCard({ post }) {
   const likePost = async () => {
     try {
-      await API.post(`posts/${post.id}/like`);
+      const token = await AsyncStorage.getItem("access");
+
+      await API.post(`posts/${post.id}/like/`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // await API.post(
+      //   `posts/${post.id}/unlike/`,
+      //   {},
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // )
     } catch (error) {
       console.log(error);
     }
@@ -33,13 +53,13 @@ export default function PostCard({ post }) {
       {/* Actions */}
       <View style={styles.actions}>
         <TouchableOpacity onPress={likePost}>
-          <Icon name="heart-outline" size={26} />
+          <Ionicons name="heart-outline" size={26} color="black" />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name= "chatbubble-outline" size={24} />
+          <Ionicons name= "chatbubble-outline" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name= "paperplane-outline" size={24} />
+          <Ionicons name= "paper-plane-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
 

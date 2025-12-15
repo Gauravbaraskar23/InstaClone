@@ -28,7 +28,7 @@ export default function HomeFeed() {
   };
 
   return (
-    <View style={StyleSheet.container}>
+    <View style={styles.container}>
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id.toString()}
